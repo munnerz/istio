@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-webhook
-          image: "{{ .Values.global.sidecarInjector.repository }}:{{ .Values.global.sidecarInjector.tag }}"
+          image: "{{ .Values.global.injector.repository }}:{{ .Values.global.injector.tag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           args:
             - --tlsCertFile=/etc/istio/certs/cert.pem

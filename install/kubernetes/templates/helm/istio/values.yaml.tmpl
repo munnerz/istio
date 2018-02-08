@@ -5,7 +5,7 @@ global:
   proxyInit:
     repository: {PROXY_HUB}/proxy_init
     tag: {PROXY_TAG}
-  sidecarInjector:
+  injector:
     repository: {PILOT_HUB}/sidecar_injector
     tag: {PILOT_TAG}
   mixer:
@@ -58,7 +58,7 @@ service:
 #
 # sidecar-injector configuration
 #
-sidecarInjector:
+injector:
   enabled: false
   serviceAccountName: default # used only if RBAC is not enabled
   replicaCount: 1

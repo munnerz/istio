@@ -1,8 +1,8 @@
 dependencies:
-  - name: sidecar-injector
+  - name: injector
     version: 0.5.0
-    # repository: file://../sidecar-injector
-    condition: sidecarInjector.enabled
+    # repository: file://../injector
+    condition: injector.enabled
   - name: mixer
     version: 0.5.0
     # repository: file://../mixer
