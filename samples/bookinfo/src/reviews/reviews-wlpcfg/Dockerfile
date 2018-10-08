@@ -20,9 +20,13 @@ ADD ./servers/LibertyProjectServer /opt/ibm/wlp/usr/servers/defaultServer/
 
 RUN /opt/ibm/wlp/bin/installUtility install  --acceptLicense /opt/ibm/wlp/usr/servers/defaultServer/server.xml
 
+ARG delay_ms
+ARG delay_percentage
 ARG service_version
 ARG enable_ratings
 ARG star_color
+ENV DELAY_MS ${delay_ms:-1000}
+ENV DELAY_PERCENTAGE ${delay_percentage:-0}
 ENV SERVICE_VERSION ${service_version:-v1}
 ENV ENABLE_RATINGS ${enable_ratings:-false}
 ENV STAR_COLOR ${star_color:-black}

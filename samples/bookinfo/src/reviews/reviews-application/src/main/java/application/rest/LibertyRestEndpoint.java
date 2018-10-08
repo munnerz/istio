@@ -16,6 +16,7 @@
 package application.rest;
 
 import java.io.StringReader;
+import java.util.Random;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -38,10 +39,13 @@ import javax.ws.rs.core.Response;
 @Path("/")
 public class LibertyRestEndpoint extends Application {
 
+    private final static Integer delay_percentage = Integer.valueOf(System.getenv("DELAY_PERCENTAGE"));
+    private final static Integer delay_ms = Integer.valueOf(System.getenv("DELAY_MS"));
     private final static Boolean ratings_enabled = Boolean.valueOf(System.getenv("ENABLE_RATINGS"));
     private final static String star_color = System.getenv("STAR_COLOR") == null ? "black" : System.getenv("STAR_COLOR");
     private final static String services_domain = System.getenv("SERVICES_DOMAIN") == null ? "" : ("." + System.getenv("SERVICES_DOMAIN"));
     private final static String ratings_service = "http://ratings" + services_domain + ":9080/ratings";
+    private final static Random rand = new Random();
 
     private String getJsonResponse (String productId, int starsReviewer1, int starsReviewer2) {
     	String result = "{";
@@ -61,7 +65,7 @@ public class LibertyRestEndpoint extends Application {
         }
       }
     	result += "},";
-    	
+
     	// reviewer 2:
     	result += "{";
     	result += "  \"reviewer\": \"Reviewer2\",";
@@ -75,13 +79,13 @@ public class LibertyRestEndpoint extends Application {
         }
       }
     	result += "}";
-    	
+
     	result += "]";
     	result += "}";
 
     	return result;
     }
-    
+
     private JsonObject getRatings(String productId, String user, String xreq, String xtraceid, String xspanid,
                                   String xparentspanid, String xsampled, String xflags, String xotspan){
       ClientBuilder cb = ClientBuilder.newBuilder();
@@ -162,9 +166,19 @@ public class LibertyRestEndpoint extends Application {
             }
           }
         }
-      } 
+      }
 
       String jsonResStr = getJsonResponse(Integer.toString(productId), starsReviewer1, starsReviewer2);
+
+      // inject an artificial sleep ~5% of the time
+      if (delay_percentage > 0 && rand.nextInt(100) + 1 <= delay_percentage) {
+          try {
+            Thread.sleep(delay_ms);
+          } catch (InterruptedException ex) {
+              return null;
+          }
+      }
+
       return Response.ok().type(MediaType.APPLICATION_JSON).entity(jsonResStr).build();
     }
 }

@@ -46,9 +46,12 @@ pushd "$SCRIPTDIR/reviews"
     #with ratings black stars
     docker build -t "istio/examples-bookinfo-reviews-v2:${VERSION}" -t istio/examples-bookinfo-reviews-v2:latest --build-arg service_version=v2 \
 	   --build-arg enable_ratings=true .
-    #with ratings red stars
+    #with ratings red stars and 3s latency 5% of the time
     docker build -t "istio/examples-bookinfo-reviews-v3:${VERSION}" -t istio/examples-bookinfo-reviews-v3:latest --build-arg service_version=v3 \
-	   --build-arg enable_ratings=true --build-arg star_color=red .
+	   --build-arg enable_ratings=true --build-arg star_color=red --build-arg delay_percentage=5 --build-arg delay_ms=3000 .
+    #with ratings red stars and no latency
+    docker build -t "istio/examples-bookinfo-reviews-v4:${VERSION}" -t istio/examples-bookinfo-reviews-v4:latest --build-arg service_version=v4 \
+           --build-arg enable_ratings=true --build-arg star_color=red .
   popd
 popd
 
